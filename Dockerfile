@@ -34,6 +34,12 @@ ADD --chmod=664 https://github.com/qemus/virtiso-whql/releases/download/v1.9.43-
 FROM dockurr/windows-arm:2.22 AS build-arm64
 FROM build-${TARGETARCH}
 
+LABEL maintainer="selvar2"
+LABEL version="1.0"
+LABEL description="This is a custom Windows container image with various tools and configurations."
+
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl --fail http://localhost:8006 || exit 1
+
 EXPOSE 8006 3389
 VOLUME /storage
 
@@ -43,3 +49,4 @@ ENV CPU_CORES="2"
 ENV DISK_SIZE="64G"
 
 ENTRYPOINT ["/usr/bin/tini", "-s", "/run/entry.sh"]
+CMD ["bash"]
